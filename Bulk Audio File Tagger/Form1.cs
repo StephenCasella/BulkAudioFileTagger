@@ -5,17 +5,71 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Bulk_Audio_File_Tagger.Properties;
 
 namespace Bulk_Audio_File_Tagger
 {
     public partial class Form1 : Form
     {
+
+
+        private delegate void ProgressBarUpdate();
+        private delegate void PerformTaggingComplete();
+        private delegate void PerformStatusUpdate();
+
+        private PerformTaggingComplete PerformTaggingCompleteImplementation = null;
+        private ProgressBarUpdate ProgressBarUpdateImplementation = null;
+        private PerformStatusUpdate PerformStatusUpdateImplementation = null;
+
+        Tagger tagger = null;
+
         public Form1()
         {
             InitializeComponent();
             status.Text = "Select files to tag";
+            tagger = new Tagger();
+            PerformTaggingCompleteImplementation = TaggingCompleteButton;
+            ProgressBarUpdateImplementation = UpdateProgressBar;
+            PerformStatusUpdateImplementation = UpdateStatus;
+        }
+
+        private void UpdateStatus()
+        {
+            if (progressBar.Maximum == progressBar.Value)
+            {
+                status.Text = "Finished";
+            }
+        }
+
+        private void InvokeUpdateStatus()
+        {
+            statusBar.Invoke(PerformStatusUpdateImplementation);
+        }
+
+        private void UpdateProgressBar()
+        {
+            progressBar.Maximum = tagger.TotalSongsToTag;
+            progressBar.Minimum = 0;
+            progressBar.Value = tagger.TotalSongsTagged + tagger.SongsNotTagged.Count;
+        }
+
+        private void InvokeUpdateProgressBar()
+        {
+            progressBar.Invoke(ProgressBarUpdateImplementation);
+        }
+
+        private void InvokeTaggingComplete()
+        {
+            tagButton.Invoke(PerformTaggingCompleteImplementation);
+            InvokeUpdateProgressBar();
+        }
+
+        private void TaggingCompleteButton()
+        {
+            tagButton.Enabled = true;
         }
 
         private void browseButton_Click(object sender, EventArgs e)
@@ -39,16 +93,80 @@ namespace Bulk_Audio_File_Tagger
 
         private void tagButton_Click(object sender, EventArgs e)
         {
+            saveSettings();
             if (!string.IsNullOrWhiteSpace(files.Text))
             {
-                status.Text = "Applying tags...";
+                uint yearInt;
 
-                // todo: kick off thread to perform atting, do status updates, etc
+                if (uint.TryParse(year.Text, out yearInt)) {
+
+                    status.Text = "Applying tags...";
+                    tagButton.Enabled = false;
+
+                    // todo: kick off thread to perform atting, do status updates, etc
+                    new Thread(() =>
+                    {
+                        try
+                        {
+                            tagger.ApplyTags(files.Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
+                                title.Text, yearInt, ablumArtists.Text, album.Text, contributingArtists.Text);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Error");
+                        }
+                        finally
+                        {
+                            try
+                            {
+                                InvokeTaggingComplete();
+                            }
+                            catch (Exception) { }
+                        }
+                    }).Start();
+
+                    new Thread(() =>
+                    {
+                        do
+                        {
+                            Thread.Sleep(100);
+                            try
+                            {
+                                InvokeUpdateStatus();
+                            }
+                            catch (Exception) { }
+                            try
+                            {
+                                InvokeUpdateProgressBar();
+                            }
+                            catch (Exception) { }
+                        }
+                        while (tagger.SongsNotTagged.Count + tagger.TotalSongsTagged < tagger.TotalSongsToTag);
+                        
+                    }).Start();
+
+                }
+                else 
+                {
+                    status.Text = "Invalid year";
+                }
             }
             else
             {
                 status.Text = "No files selected";
             }
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            saveSettings();
+        }
+
+        private void saveSettings()
+        {
+            Settings.Default.Save();
+        }
+
+
     }
 }
