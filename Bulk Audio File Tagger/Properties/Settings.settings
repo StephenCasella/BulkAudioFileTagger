@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Title" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Automatically set from file name</Value>
     </Setting>
     <Setting Name="AlbumArtist" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

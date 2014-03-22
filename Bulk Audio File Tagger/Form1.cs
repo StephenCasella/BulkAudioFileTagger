@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -41,6 +42,11 @@ namespace Bulk_Audio_File_Tagger
             if (progressBar.Maximum == progressBar.Value)
             {
                 status.Text = "Finished";
+            }
+            else if (tagger.SongsNotTagged.Count + tagger.TotalSongsTagged == tagger.TotalSongsToTag && 
+                tagger.SongsNotTagged.Any())
+            {
+                status.Text = "Failed";
             }
         }
 
@@ -103,13 +109,28 @@ namespace Bulk_Audio_File_Tagger
                     status.Text = "Applying tags...";
                     tagButton.Enabled = false;
 
-                    // todo: kick off thread to perform atting, do status updates, etc
                     new Thread(() =>
                     {
                         try
                         {
                             tagger.ApplyTags(files.Text.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
-                                title.Text, yearInt, ablumArtists.Text, album.Text, contributingArtists.Text);
+                                yearInt, ablumArtists.Text, album.Text, contributingArtists.Text);
+
+                            if (tagger.SongsNotTagged.Count > 0)
+                            {
+                                StringBuilder errorText = new StringBuilder();
+
+                                errorText.AppendLine("The following songs were not successfully tagged:").AppendLine();
+
+                                foreach (string song in tagger.SongsNotTagged)
+                                {
+                                    errorText.AppendLine(Path.GetFileName(song));
+                                }
+
+                                errorText.AppendLine().AppendLine("Please try again.");
+
+                                MessageBox.Show(errorText.ToString(), "Error");
+                            }
                         }
                         catch (Exception ex)
                         {

@@ -25,7 +25,7 @@ namespace Bulk_Audio_File_Tagger.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Automatically set from file name")]
         public string Title {
             get {
                 return ((string)(this["Title"]));

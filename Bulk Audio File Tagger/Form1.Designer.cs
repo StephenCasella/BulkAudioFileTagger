@@ -37,17 +37,17 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tagButton = new System.Windows.Forms.Button();
             this.contributingArtists = new System.Windows.Forms.TextBox();
             this.ablumArtists = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.year = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.album = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.title = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tagButton = new System.Windows.Forms.Button();
             this.statusBar.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -130,6 +130,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tag Data";
             // 
+            // contributingArtists
+            // 
+            this.contributingArtists.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Bulk_Audio_File_Tagger.Properties.Settings.Default, "ContributingArtists", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.contributingArtists.Location = new System.Drawing.Point(346, 49);
+            this.contributingArtists.Name = "contributingArtists";
+            this.contributingArtists.Size = new System.Drawing.Size(199, 20);
+            this.contributingArtists.TabIndex = 3;
+            this.contributingArtists.Text = global::Bulk_Audio_File_Tagger.Properties.Settings.Default.ContributingArtists;
+            // 
+            // ablumArtists
+            // 
+            this.ablumArtists.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Bulk_Audio_File_Tagger.Properties.Settings.Default, "AlbumArtist", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.ablumArtists.Location = new System.Drawing.Point(346, 20);
+            this.ablumArtists.Name = "ablumArtists";
+            this.ablumArtists.Size = new System.Drawing.Size(199, 20);
+            this.ablumArtists.TabIndex = 1;
+            this.ablumArtists.Text = global::Bulk_Audio_File_Tagger.Properties.Settings.Default.AlbumArtist;
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -148,6 +166,15 @@
             this.label5.TabIndex = 6;
             this.label5.Text = "Album Artist";
             // 
+            // year
+            // 
+            this.year.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Bulk_Audio_File_Tagger.Properties.Settings.Default, "Year", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.year.Location = new System.Drawing.Point(41, 49);
+            this.year.Name = "year";
+            this.year.Size = new System.Drawing.Size(199, 20);
+            this.year.TabIndex = 2;
+            this.year.Text = global::Bulk_Audio_File_Tagger.Properties.Settings.Default.Year;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -157,6 +184,15 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "Year";
             // 
+            // album
+            // 
+            this.album.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Bulk_Audio_File_Tagger.Properties.Settings.Default, "Album", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.album.Location = new System.Drawing.Point(41, 74);
+            this.album.Name = "album";
+            this.album.Size = new System.Drawing.Size(199, 20);
+            this.album.TabIndex = 4;
+            this.album.Text = global::Bulk_Audio_File_Tagger.Properties.Settings.Default.Album;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -165,6 +201,15 @@
             this.label3.Size = new System.Drawing.Size(36, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Album";
+            // 
+            // title
+            // 
+            this.title.Location = new System.Drawing.Point(41, 20);
+            this.title.Name = "title";
+            this.title.ReadOnly = true;
+            this.title.Size = new System.Drawing.Size(199, 20);
+            this.title.TabIndex = 10;
+            this.title.Text = "Automatically set from file name";
             // 
             // label2
             // 
@@ -180,55 +225,10 @@
             this.tagButton.Location = new System.Drawing.Point(17, 152);
             this.tagButton.Name = "tagButton";
             this.tagButton.Size = new System.Drawing.Size(555, 23);
-            this.tagButton.TabIndex = 6;
+            this.tagButton.TabIndex = 5;
             this.tagButton.Text = "Apply Tags";
             this.tagButton.UseVisualStyleBackColor = true;
             this.tagButton.Click += new System.EventHandler(this.tagButton_Click);
-            // 
-            // contributingArtists
-            // 
-            this.contributingArtists.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Bulk_Audio_File_Tagger.Properties.Settings.Default, "ContributingArtists", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.contributingArtists.Location = new System.Drawing.Point(346, 49);
-            this.contributingArtists.Name = "contributingArtists";
-            this.contributingArtists.Size = new System.Drawing.Size(199, 20);
-            this.contributingArtists.TabIndex = 4;
-            this.contributingArtists.Text = global::Bulk_Audio_File_Tagger.Properties.Settings.Default.ContributingArtists;
-            // 
-            // ablumArtists
-            // 
-            this.ablumArtists.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Bulk_Audio_File_Tagger.Properties.Settings.Default, "AlbumArtist", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.ablumArtists.Location = new System.Drawing.Point(346, 20);
-            this.ablumArtists.Name = "ablumArtists";
-            this.ablumArtists.Size = new System.Drawing.Size(199, 20);
-            this.ablumArtists.TabIndex = 2;
-            this.ablumArtists.Text = global::Bulk_Audio_File_Tagger.Properties.Settings.Default.AlbumArtist;
-            // 
-            // year
-            // 
-            this.year.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Bulk_Audio_File_Tagger.Properties.Settings.Default, "Year", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.year.Location = new System.Drawing.Point(41, 49);
-            this.year.Name = "year";
-            this.year.Size = new System.Drawing.Size(199, 20);
-            this.year.TabIndex = 3;
-            this.year.Text = global::Bulk_Audio_File_Tagger.Properties.Settings.Default.Year;
-            // 
-            // album
-            // 
-            this.album.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Bulk_Audio_File_Tagger.Properties.Settings.Default, "Album", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.album.Location = new System.Drawing.Point(41, 74);
-            this.album.Name = "album";
-            this.album.Size = new System.Drawing.Size(199, 20);
-            this.album.TabIndex = 5;
-            this.album.Text = global::Bulk_Audio_File_Tagger.Properties.Settings.Default.Album;
-            // 
-            // title
-            // 
-            this.title.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::Bulk_Audio_File_Tagger.Properties.Settings.Default, "Title", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.title.Location = new System.Drawing.Point(41, 20);
-            this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(199, 20);
-            this.title.TabIndex = 1;
-            this.title.Text = global::Bulk_Audio_File_Tagger.Properties.Settings.Default.Title;
             // 
             // Form1
             // 
