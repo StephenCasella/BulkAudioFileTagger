@@ -17,6 +17,8 @@ namespace Bulk_Audio_File_Tagger
     {
 
 
+        public delegate void PerformGeneralUpdate();
+        public delegate void PerformCompletionUpdate();
         private delegate void ProgressBarUpdate();
         private delegate void PerformTaggingComplete();
         private delegate void PerformStatusUpdate();
@@ -24,6 +26,8 @@ namespace Bulk_Audio_File_Tagger
         private PerformTaggingComplete PerformTaggingCompleteImplementation = null;
         private ProgressBarUpdate ProgressBarUpdateImplementation = null;
         private PerformStatusUpdate PerformStatusUpdateImplementation = null;
+        private PerformGeneralUpdate DoGeneralUpdate = null;
+        private PerformCompletionUpdate DoCompletionUpdate = null;
 
         Tagger tagger = null;
 
@@ -31,10 +35,35 @@ namespace Bulk_Audio_File_Tagger
         {
             InitializeComponent();
             status.Text = "Select files to tag";
-            tagger = new Tagger();
             PerformTaggingCompleteImplementation = TaggingCompleteButton;
             ProgressBarUpdateImplementation = UpdateProgressBar;
             PerformStatusUpdateImplementation = UpdateStatus;
+            DoGeneralUpdate = GeneralUpdate;
+            DoCompletionUpdate = CompletionUpdate;
+            tagger = new Tagger(DoGeneralUpdate, DoCompletionUpdate);
+        }
+
+        private void CompletionUpdate()
+        {
+            try
+            {
+                InvokeTaggingComplete();
+            }
+            catch (Exception) { }
+        }
+
+        private void GeneralUpdate()
+        {
+            try
+            {
+                InvokeUpdateProgressBar();
+            }
+            catch (Exception) { }
+            try
+            {
+                InvokeUpdateStatus();
+            }
+            catch (Exception) { }
         }
 
         private void UpdateStatus()
@@ -136,34 +165,6 @@ namespace Bulk_Audio_File_Tagger
                         {
                             MessageBox.Show(ex.Message, "Error");
                         }
-                        finally
-                        {
-                            try
-                            {
-                                InvokeTaggingComplete();
-                            }
-                            catch (Exception) { }
-                        }
-                    }).Start();
-
-                    new Thread(() =>
-                    {
-                        do
-                        {
-                            Thread.Sleep(100);
-                            try
-                            {
-                                InvokeUpdateStatus();
-                            }
-                            catch (Exception) { }
-                            try
-                            {
-                                InvokeUpdateProgressBar();
-                            }
-                            catch (Exception) { }
-                        }
-                        while (tagger.SongsNotTagged.Count + tagger.TotalSongsTagged < tagger.TotalSongsToTag);
-                        
                     }).Start();
 
                 }
